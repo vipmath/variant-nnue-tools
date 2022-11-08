@@ -79,14 +79,6 @@ namespace {
         v->add_piece(FERS, 'f');
         return v;
     }
-      // Raazuva (Maldivian Chess)
-    Variant* raazuvaa_variant() {
-        Variant* v = chess_variant()->init();
-        v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
-        v->castling = false;
-        v->doubleStep = false;
-        return v;
-    }
     // Makruk (Thai Chess)
     // https://en.wikipedia.org/wiki/Makruk
     Variant* makruk_variant() {
@@ -272,6 +264,36 @@ namespace {
         v->checking = false;
         return v;
     }
+	
+    Variant* racingkings_house_variant() {
+        Variant* v = racingkings_variant()->init();
+        v->startFen = "8/8/8/8/8/8/krbnNBRK/qrbnNBRQ[] w - - 0 1";
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;		
+        return v;
+    }
+
+    Variant* racingchess_variant() {
+        Variant* v = chess_variant_base()->init();
+        v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";		
+        v->flagPiece = KING;
+        v->whiteFlag = Rank8BB;
+        v->blackFlag = Rank1BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }
+
+    Variant* racingchess_house_variant() {
+        Variant* v = racingchess_variant()->init();
+        v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[] w KQkq - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;		
+        return v;
+    }	
+	
     // Knightmate
     // https://www.chessvariants.com/diffobjective.dir/knightmate.html
     Variant* knightmate_variant() {
@@ -432,6 +454,26 @@ namespace {
         v->capturesToHand = true;
         return v;
     }
+	
+	
+    Variant* coffeehouse_variant() {
+        Variant* v = crazyhouse_variant()->init();
+        v->mustCapture = true;		
+        return v;
+    }	
+	
+    Variant* pocketcrazyhouse_variant() {
+        Variant* v = crazyhouse_variant()->init();
+        v->startFen = "3qk3/pppppppp/8/8/8/8/PPPPPPPP/3QK3[RRNNBBrrnnbb] w KQkq - 0 1";		
+        return v;
+    }
+
+    Variant* pocketcrazy_variant() {
+        Variant* v = crazyhouse_variant()->init();
+        v->startFen = "3qk3/pppppppp/8/8/8/8/PPPPPPPP/3QK3[RRNNBBrrnnbb] w KQkq - 0 1";	
+        v->capturesToHand = false;		
+        return v;
+    }
     // Loop chess
     // Variant of crazyhouse where promoted pawns are not demoted when captured
     // https://en.wikipedia.org/wiki/Crazyhouse#Variations
@@ -550,24 +592,6 @@ namespace {
         v->variantTemplate = "crazyhouse";
         v->pieceDrops = true;
         v->capturesToHand = true;
-        return v;
-    }
-    // Dragon Chess
-    // 8x8 variant invented by Miguel Illescas:
-    // https://www.edami.com/dragonchess/
-    // Like regular chess, but with an extra piece, the dragon, which moves like
-    // an archbishop (i.e. bishop+knight). The dragon can be dropped at an empty
-    // square on the back rank instead of making a normal move.
-    Variant* dragon_variant() {
-        Variant *v = chess_variant_base()->init();
-        v->variantTemplate = "bughouse";
-        v->pieceToCharTable = "PNBRQ............D...Kpnbrq............d...k";
-        v->add_piece(ARCHBISHOP, 'd');
-        v->startFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[Dd] w KQkq - 0 1";
-        v->pieceDrops = true;
-        v->capturesToHand = false;
-        v->whiteDropRegion = Rank1BB;
-        v->blackDropRegion = Rank8BB;
         return v;
     }
     // Base used for most shogi variants
@@ -958,6 +982,53 @@ namespace {
         v->flyingGeneral = true;
         return v;
     }
+
+    Variant* minichangqi_variant() {
+        Variant* v = chess_variant_base()->init();
+        v->variantTemplate = "changqi";
+        v->pieceToCharTable = "PN.R.....K.C.pn.r.....k.c.";
+        v->maxRank = RANK_7;
+        v->maxFile = FILE_G;
+        v->reset_pieces();
+        v->add_piece(ROOK, 'r');
+        v->add_piece(HORSE, 'n', 'h');
+        v->add_piece(KING, 'k');
+        v->add_piece(CANNON, 'c');
+        v->add_piece(SOLDIER, 'p');
+        v->startFen = "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w - - 0 1";
+        v->promotionPieceTypes = {};
+        v->doubleStep = false;
+        v->castling = false;
+        v->stalemateValue = -VALUE_MATE;
+        //v->nFoldValue = VALUE_MATE;
+        v->perpetualCheckIllegal = true;
+        v->flyingGeneral = true;
+        return v;
+    }
+	
+    Variant* minichanggi_variant() {
+        Variant* v = chess_variant_base()->init();
+        v->variantTemplate = "changgi";
+        v->pieceToCharTable = "PN.R.....K.C.pn.r.....k.c.";
+        v->maxRank = RANK_7;
+        v->maxFile = FILE_G;
+        v->reset_pieces();
+        v->add_piece(ROOK, 'r');
+        v->add_piece(HORSE, 'n', 'h');
+        v->add_piece(KING, 'k');
+        v->add_piece(JANGGI_CANNON, 'c');
+        v->add_piece(SOLDIER, 'p');
+        v->startFen = "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w - - 0 1";
+        v->promotionPieceTypes = {};
+        v->doubleStep = false;
+        v->castling = false;
+        v->stalemateValue = -VALUE_MATE;
+        //v->nFoldValue = VALUE_MATE;
+        v->perpetualCheckIllegal = true;
+        v->flyingGeneral = false;
+        return v;
+    }	
+	
 #ifdef LARGEBOARDS
     // Shogi (Japanese chess)
     // https://en.wikipedia.org/wiki/Shogi
@@ -973,6 +1044,58 @@ namespace {
         v->promotedPieceType[SHOGI_KNIGHT] = GOLD;
         return v;
     }
+    Variant* pandemonium_variant() {
+        Variant* v = variant_base()->init();
+        v->variantTemplate = "shogi";
+        v->pieceToCharTable = "PNBRFSA.UV.++++++++.++Kpnbrfsa.uv.++++++++.++k";		
+        v->maxRank = RANK_9;
+        v->maxFile = FILE_I;
+        v->pocketSize = 9;		
+        v->startFen = "rnbsksbnr/2+f1+u1+a2/p1p1p1p1p/4v4/9/4V4/P1P1P1P1P/2+F1+U1+A2/RNBSKSBNR[] w - - 0 1";
+		v->reset_pieces();
+        v->add_piece(CUSTOM_PIECES, 'o', "NA");
+        v->add_piece(CUSTOM_PIECES + 1, 's', "WF"); 
+        v->add_piece(CUSTOM_PIECES + 2, 'u', "D"); 
+        v->add_piece(CUSTOM_PIECES + 3, 'w', "DWF");
+        v->add_piece(SOLDIER, 'p');	
+        v->add_piece(KNIGHT, 'n');
+        v->add_piece(BISHOP, 'b');	
+        v->add_piece(ROOK, 'r');	
+        v->add_piece(KING, 'k');	
+        v->add_piece(QUEEN, 'q');
+        v->add_piece(COMMONER, 'g');	
+        v->add_piece(DRAGON_HORSE, 'h');
+        v->add_piece(BERS, 'd');	
+        v->add_piece(ALFIL, 'a');
+        v->add_piece(ARCHBISHOP, 'c');	
+        v->add_piece(CHANCELLOR, 'm');	
+        v->add_piece(FERS, 'f');	
+        v->add_piece(WAZIR, 'v');
+        v->add_piece(CENTAUR, 't');		
+        v->promotedPieceType[SOLDIER] = COMMONER;
+        v->promotedPieceType[KNIGHT] = CUSTOM_PIECES;
+        v->promotedPieceType[BISHOP] = DRAGON_HORSE;
+        v->promotedPieceType[ROOK] = BERS;		
+        v->promotedPieceType[ALFIL] = ARCHBISHOP;
+        v->promotedPieceType[WAZIR] = CHANCELLOR;
+        v->promotedPieceType[FERS] = QUEEN;
+        v->promotedPieceType[CUSTOM_PIECES + 1] = CUSTOM_PIECES + 3;	
+        v->promotedPieceType[CUSTOM_PIECES + 2] = CENTAUR;			
+        v->castling = false;
+        v->capturesToHand = true;
+        v->pieceDrops = true;	
+        v->immobilityIllegal = true;
+        v->promotionRank = RANK_7;
+        v->doubleStep = false;		
+        v->perpetualCheckIllegal = true;	
+        v->nMoveRule = 0;
+        v->nFoldValue = -VALUE_MATE;
+        v->stalemateValue = -VALUE_MATE;
+        v->flagPiece = KING;
+        v->whiteFlag = Rank9BB;
+        v->blackFlag = Rank1BB;  
+		return v;
+    }							
     // Sho-Shogi
     // 16-th century shogi variant with one additional piece and no drops
     // https://en.wikipedia.org/wiki/Sho_shogi
@@ -1232,6 +1355,14 @@ namespace {
         v->castling = false;
         return v;
     }
+	
+    Variant* grandhouse_variant() {
+        Variant* v = grand_variant()->init();
+        v->startFen = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R[] w - - 0 1";
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }	
     // Opulent chess
     // Variant of Grand chess with two extra pieces
     // https://www.chessvariants.com/rules/opulent-chess
@@ -1350,11 +1481,231 @@ namespace {
         v->soldierPromotionRank = RANK_6;
         return v;
     }
+	
     Variant* xiangqi_variant() {
         Variant* v = xiangqi_variant_base()->init();
         v->chasingRule = AXF_CHASING;
         return v;
     }
+
+    Variant* changqi_variant() {
+        Variant* v = minichangqi_variant()->init();
+        v->pieceToCharTable = "PN.R.AB..K.C..........pn.r.ab..k.c..........";
+        v->maxRank = RANK_10;
+        v->maxFile = FILE_I;
+        v->add_piece(ELEPHANT, 'b', 'e');
+        v->add_piece(FERS, 'a');
+        v->startFen = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1";		
+        v->soldierPromotionRank = RANK_6;	
+        return v;
+    }
+	
+    Variant* chessxiangqi_variant() {
+        Variant* v = changqi_variant()->init();
+        v->chasingRule = AXF_CHASING;	 
+        return v;
+    }	
+
+    Variant* chessxiangqi_house_variant() {
+        Variant* v = chessxiangqi_variant()->init();
+        v->startFen = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+	
+    Variant* racingkingsxiangqi_variant() {
+        Variant* v = chessxiangqi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
+        //v->remove_piece(SOLDIER);
+        //v->remove_piece(FERS);			
+        v->flagPiece = KING;
+        v->whiteFlag = Rank10BB;
+        v->blackFlag = Rank10BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }
+
+    Variant* racingkingsxiangqi_house_variant() {
+        Variant* v = racingkingsxiangqi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }	
+	
+	
+    Variant* changgi_variant() {
+        Variant* v = minichanggi_variant()->init();
+        v->pieceToCharTable = "PN.R.AB..K.C..........pn.r.ab..k.c..........";
+        v->maxRank = RANK_10;
+        v->maxFile = FILE_I;
+        v->add_piece(JANGGI_ELEPHANT, 'b', 'e');
+        v->add_piece(FERS, 'a');
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 0 1";
+        v->bikjangRule = false;
+        v->materialCounting = JANGGI_MATERIAL;
+        v->moveRepetitionIllegal = true;
+	    v->nFoldRule = 4; // avoid nFold being triggered before move repetition
+        v->nMoveRule = 100; // avoid adjudication before reaching 200 half-moves	
+        v->pass = true;			
+        return v;
+    }
+
+    Variant* changgi_house_variant() {
+        Variant* v = changgi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+
+    Variant* chessjanggi_variant() {
+        Variant* v = changgi_variant()->init();
+        v->remove_piece(JANGGI_ELEPHANT);
+        v->remove_piece(HORSE);
+        v->add_piece(KNIGHT, 'n');
+        v->add_piece(BISHOP, 'b');		
+        return v;
+    }
+	
+    Variant* chessjanggi_house_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+
+    Variant* racingkingsjanggi_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
+        //v->remove_piece(SOLDIER);
+        //v->remove_piece(FERS);							
+        v->flagPiece = KING;
+        v->whiteFlag = Rank10BB;
+        v->blackFlag = Rank10BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }
+	
+    Variant* racingpawnsjanggi_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
+        v->remove_piece(SOLDIER);
+        //v->remove_piece(FERS);
+        //v->add_piece(COMMONER, 'p');	
+        //v->kingType = CENTAUR;		
+        v->add_piece(WAZIR, 'p');		
+        v->flagPiece = KING;
+        v->whiteFlag = Rank10BB;
+        v->blackFlag = Rank10BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }	
+
+    Variant* racingpawnsjanggi_house_variant() {
+        Variant* v = racingpawnsjanggi_variant()->init();
+        v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }
+	
+    Variant* racingcentaurjanggi_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
+        v->remove_piece(SOLDIER);
+        v->add_piece(WAZIR, 'p');				
+        //v->kingType = CENTAUR;	
+        v->kingType = HORSE;			
+        v->flagPiece = KING;
+        v->whiteFlag = Rank10BB;
+        v->blackFlag = Rank10BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }	
+
+    Variant* racingcentaurjanggi_house_variant() {
+        Variant* v = racingcentaurjanggi_variant()->init();
+        v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }
+
+    Variant* racingkingsjanggi_house_variant() {
+        Variant* v = racingkingsjanggi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }	
+
+    Variant* racingjanggi_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 0 1";		
+        v->flagPiece = KING;
+        v->whiteFlag = Rank10BB;
+        v->blackFlag = Rank1BB;
+        v->flagMove = true;
+        v->checking = false;
+        return v;
+    }
+	
+    Variant* racingjanggi_house_variant() {
+        Variant* v = racingjanggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }	
+
+    Variant* minixiangqi_house_variant() {
+        Variant* v = minixiangqi_variant()->init();
+        v->startFen = "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR[] w - - 0 1";		
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+	
+    Variant* xiangqihouse_variant() {
+        Variant* v = xiangqi_variant()->init();
+        v->startFen = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR[] w - - 0 1";		
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->whiteDropRegion = Rank1BB | Rank2BB | Rank3BB | Rank4BB | Rank5BB;
+        v->blackDropRegion = Rank6BB | Rank7BB | Rank8BB | Rank9BB | Rank10BB;
+        return v;
+    }
+
+    Variant* xiangqilhouse_variant() {
+        Variant* v = xiangqi_variant()->init();
+        v->startFen = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR[] w - - 0 1";		
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }
+
+    Variant* xiangqihhouse_variant() {
+        Variant* v = xiangqi_variant()->init();
+        v->startFen = "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR[] w - - 0 1";		
+        v->dropChecks = true;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }	
     // Manchu/Yitong chess
     // Asymmetric Xiangqi variant with a super-piece
     // https://en.wikipedia.org/wiki/Manchu_chess
@@ -1405,12 +1756,39 @@ namespace {
         v->perpetualCheckIllegal = true;
         return v;
     }
+
+    Variant* minijanggi_variant() {
+        Variant* v = minixiangqi_variant()->init();
+        v->startFen = "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w - - 0 1";
+        v->diagonalLines = make_bitboard(SQ_C1, SQ_E1, SQ_D2, SQ_C3, SQ_E3,
+                                         SQ_C5, SQ_E5, SQ_D6, SQ_C7, SQ_E7);		
+        v->remove_piece(CANNON);
+        v->add_piece(JANGGI_CANNON, 'c');	
+        v->soldierPromotionRank = RANK_1;	
+        v->flyingGeneral = false;		
+		v->bikjangRule = false;
+        v->materialCounting = JANGGI_MATERIAL;
+        v->moveRepetitionIllegal = true;
+        v->pass = false;		
+        v->nFoldRule = 4; // avoid nFold being triggered before move repetition
+        v->nMoveRule = 100; // avoid adjudication before reaching 200 half-moves
+        return v;
+    }
+	
+    Variant* minijanggi_house_variant() {
+        Variant* v = minijanggi_variant()->init();
+        v->startFen = "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR[] w - - 0 1";		
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+				
     // Traditional rules of Janggi, where bikjang is a draw
     Variant* janggi_traditional_variant() {
         Variant* v = janggi_variant()->init();
         v->bikjangRule = true;
         v->materialCounting = NO_MATERIAL_COUNTING;
-        v->nnueAlias = "janggi";
         return v;
     }
     // Modern rules of Janggi, where bikjang is not considered, but material counting is.
@@ -1420,17 +1798,175 @@ namespace {
         v->bikjangRule = false;
         v->materialCounting = JANGGI_MATERIAL;
         v->moveRepetitionIllegal = true;
+        v->pass = false;		
         v->nFoldRule = 4; // avoid nFold being triggered before move repetition
         v->nMoveRule = 100; // avoid adjudication before reaching 200 half-moves
-        v->nnueAlias = "janggi";
         return v;
     }
+
+    Variant* check3janggi_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 3+3 0 1";
+        v->checkCounting = true;		
+        return v;
+    }
+	
+    Variant* check3janggihouse_variant() {
+        Variant* v = check3janggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 3+3 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;			
+        return v;
+    }
+	
+
+    Variant* check5janggi_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 5+5 0 1";
+        v->checkCounting = true;		
+        return v;
+    }
+	
+    Variant* check5janggihouse_variant() {
+        Variant* v = check5janggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 5+5 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;			
+        return v;
+    }	
+  
+    Variant* atomicjanggi_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 0 1";		
+        v->remove_piece(KING);
+        v->add_piece(COMMONER, 'k');
+        v->extinctionValue = -VALUE_MATE;
+        v->extinctionPieceTypes = {COMMONER};		
+        v->blastOnCapture = true;
+        v->extinctionPseudoRoyal = true;			
+        return v;
+    }
+
+    Variant* atomicjanggi_house_variant() {
+        Variant* v = chessjanggi_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[RRNNBBCCPPPPPrrnnbbccppppp] w - - 0 1";		
+        v->remove_piece(KING);
+        v->add_piece(COMMONER, 'k');
+        v->extinctionValue = -VALUE_MATE;
+        v->extinctionPieceTypes = {COMMONER};		
+        v->blastOnCapture = true;
+        v->extinctionPseudoRoyal = true;
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->whiteDropRegion = Rank1BB | Rank2BB | Rank3BB | Rank4BB | Rank5BB;
+        v->blackDropRegion = Rank6BB | Rank7BB | Rank8BB | Rank9BB | Rank10BB;		
+        return v;
+    }
+
+    Variant* coffeejanggi_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 0 1";		
+        v->mustCapture = true;	
+        return v;
+    }
+	
+    Variant* nudejanggi_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "9/4k4/9/9/9/9/9/9/4K4/9[RRNNBBCCAAPPPPPrrnnbbccaappppp] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = false;
+        v->dropChecks = false;		
+        return v;
+    }	
+
+    Variant* nudejanggi_house_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "9/4k4/9/9/9/9/9/9/4K4/9[RRNNBBCCAAPPPPPrrnnbbccaappppp] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;
+        //v->whiteDropRegion = Rank1BB | Rank2BB | Rank3BB | Rank4BB | Rank5BB;
+        //v->blackDropRegion = Rank6BB | Rank7BB | Rank8BB | Rank9BB | Rank10BB;		
+        return v;
+    }
+	
+    Variant* coffeejanggi_house_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->mustCapture = true;		
+        return v;
+    }	
+	
+    Variant* janggi_house_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+	
+    Variant* janggi_lhouse_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR[] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;		
+        return v;
+    }	
+
+    Variant* pocketjanggi_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "3a1a3/4k4/9/p1p1p1p1p/9/9/P1P1P1P1P/9/4K4/3A1A3[RRNNBBCCrrnnbbcc] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = false;		
+        return v;
+    }		
+
+    Variant* pocketjanggil_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "3a1a3/4k4/9/p1p1p1p1p/9/9/P1P1P1P1P/9/4K4/3A1A3[RRNNBBCCrrnnbbcc] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = false;
+        v->dropChecks = false;		
+        return v;
+    }
+
+    Variant* pocketjanggip_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "3a1a3/4k4/9/2p1p1p2/9/9/2P1P1P2/9/4K4/3A1A3[RRNNBBCCPPrrnnbbccpp] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = false;
+        v->dropChecks = false;		
+        return v;
+    }
+
+    Variant* pocketjanggi_house_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "3a1a3/4k4/9/p1p1p1p1p/9/9/P1P1P1P1P/9/4K4/3A1A3[RRNNBBCCrrnnbbcc] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;		
+        return v;
+    }
+
+    Variant* pocketjanggi_lhouse_variant() {
+        Variant* v = janggi_modern_variant()->init();
+        v->startFen = "3a1a3/4k4/9/p1p1p1p1p/9/9/P1P1P1P1P/9/4K4/3A1A3[RRNNBBCCrrnnbbcc] w - - 0 1";		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        v->dropChecks = false;		
+        return v;
+    }	
+	
     // Casual rules of Janggi, where bikjang and material counting are not considered
     Variant* janggi_casual_variant() {
         Variant* v = janggi_variant()->init();
         v->bikjangRule = false;
         v->materialCounting = NO_MATERIAL_COUNTING;
-        v->nnueAlias = "janggi";
         return v;
     }
 #endif
@@ -1463,6 +1999,9 @@ void VariantMap::init() {
     add("newzealand", newzealand_variant());
     add("kingofthehill", kingofthehill_variant());
     add("racingkings", racingkings_variant());
+    add("racingkingshouse", racingkings_house_variant());	
+    add("racingchess", racingchess_variant());
+    add("racingchesshouse", racingchess_house_variant());	
     add("knightmate", knightmate_variant());
     add("losers", losers_variant());
     add("giveaway", giveaway_variant());
@@ -1478,6 +2017,9 @@ void VariantMap::init() {
     add("3check", threecheck_variant());
     add("5check", fivecheck_variant());
     add("crazyhouse", crazyhouse_variant());
+    add("pocketcrazyhouse", pocketcrazyhouse_variant());
+    add("pocketcrazy", pocketcrazy_variant());
+    add("coffeehouse", coffeehouse_variant());	
     add("loop", loop_variant());
     add("chessgi", chessgi_variant());
     add("bughouse", bughouse_variant());
@@ -1487,7 +2029,6 @@ void VariantMap::init() {
     add("sittuyin", sittuyin_variant());
     add("seirawan", seirawan_variant());
     add("shouse", shouse_variant());
-    add("dragon", dragon_variant());
     add("minishogi", minishogi_variant());
     add("mini", minishogi_variant());
     add("kyotoshogi", kyotoshogi_variant());
@@ -1509,9 +2050,14 @@ void VariantMap::init() {
     add("flipersi", flipersi_variant());
     add("flipello", flipello_variant());
     add("minixiangqi", minixiangqi_variant());
-    add("raazuvaa", raazuvaa_variant());
+    add("minichangqi", minichangqi_variant());	
+    add("minixiangqihouse", minixiangqi_house_variant());	
+    add("minijanggi", minijanggi_variant());
+    add("minichanggi", minichanggi_variant());	
+    add("minijanggihouse", minijanggi_house_variant());	
 #ifdef LARGEBOARDS
     add("shogi", shogi_variant());
+    add("pandemonium", pandemonium_variant());	
     add("shoshogi", shoshogi_variant());
     add("yarishogi", yarishogi_variant());
     add("okisakishogi", okisakishogi_variant());
@@ -1527,6 +2073,7 @@ void VariantMap::init() {
     add("jesonmor", jesonmor_variant());
     add("courier", courier_variant());
     add("grand", grand_variant());
+    add("grandhouse", grandhouse_variant());	
     add("opulent", opulent_variant());
     add("tencubed", tencubed_variant());
     add("shako", shako_variant());
@@ -1536,11 +2083,48 @@ void VariantMap::init() {
     add("amazons", amazons_variant());
 #endif
     add("xiangqi", xiangqi_variant());
+    add("changqi", changqi_variant());
+    add("racingkingsxiangqi", racingkingsxiangqi_variant());	
+    add("racingkingsxiangqihouse", racingkingsxiangqi_house_variant());	
+    add("chessxiangqi", chessxiangqi_variant());
+    add("chessxiangqihouse", chessxiangqi_house_variant());	
+    add("xiangqihouse", xiangqihouse_variant());
+    add("xiangqilhouse", xiangqilhouse_variant());
+    add("xiangqihhouse", xiangqihhouse_variant());	
     add("manchu", manchu_variant());
     add("supply", supply_variant());
     add("janggi", janggi_variant());
+    add("racingkingsjanggi", racingkingsjanggi_variant());	
+    add("racingkingsjanggihouse", racingkingsjanggi_house_variant());
+    add("racingpawnsjanggi", racingpawnsjanggi_variant());	
+    add("racingpawnsjanggihouse", racingpawnsjanggi_house_variant());
+    add("racingcentaurjanggi", racingcentaurjanggi_variant());	
+    add("racingcentaurjanggihouse", racingcentaurjanggi_house_variant());	
+    add("racingjanggi", racingjanggi_variant());
+    add("racingjanggihouse", racingjanggi_house_variant());	
+    add("chessjanggi", chessjanggi_variant());
+    add("chessjanggihouse", chessjanggi_house_variant());	
+    add("changgi", changgi_variant());	
+    add("changgihouse", changgi_house_variant());		
+    add("3checkjanggi", check3janggi_variant());
+    add("5checkjanggi", check5janggi_variant());
+    add("3checkjanggihouse", check3janggihouse_variant());
+    add("5checkjanggihouse", check5janggihouse_variant());	
     add("janggitraditional", janggi_traditional_variant());
     add("janggimodern", janggi_modern_variant());
+    add("janggihouse", janggi_house_variant());	
+    add("janggilhouse", janggi_lhouse_variant());
+    add("pocketjanggihouse", pocketjanggi_house_variant());
+    add("pocketjanggilhouse", pocketjanggi_lhouse_variant());	
+    add("pocketjanggi", pocketjanggi_variant());
+    add("pocketjanggil", pocketjanggil_variant());	
+    add("pocketjanggip", pocketjanggip_variant());
+    add("coffeejanggi", coffeejanggi_variant());
+    add("atomicjanggi", atomicjanggi_variant());
+    add("atomicjanggihouse", atomicjanggi_house_variant());	
+    add("nudejanggi", nudejanggi_variant());
+    add("nudejanggihouse", nudejanggi_house_variant());	
+    add("coffeejanggihouse", coffeejanggi_house_variant());		
     add("janggicasual", janggi_casual_variant());
 #endif
 }
