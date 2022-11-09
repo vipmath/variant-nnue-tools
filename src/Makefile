@@ -105,7 +105,7 @@ VPATH = syzygy:nnue:nnue/features:eval:extra:tools
 
 
 ### 2.1. General and architecture defaults
-largeboards = no
+largeboards = yes
 all = no
 precomputedmagics = yes
 nnue = no

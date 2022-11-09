@@ -1560,6 +1560,7 @@ namespace {
         v->pieceDrops = true;
         v->capturesToHand = true;		
         return v;
+    }		
 
     Variant* chessjanggi_variant() {
         Variant* v = changgi_variant()->init();
