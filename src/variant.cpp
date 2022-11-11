@@ -1580,10 +1580,8 @@ namespace {
     }
 
     Variant* racingkingsjanggi_variant() {
-        Variant* v = chessjanggi_variant()->init();
-        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
-        //v->remove_piece(SOLDIER);
-        //v->remove_piece(FERS);							
+        Variant* v = changgi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";						
         v->flagPiece = KING;
         v->whiteFlag = Rank10BB;
         v->blackFlag = Rank10BB;
@@ -1591,9 +1589,18 @@ namespace {
         v->checking = false;
         return v;
     }
+
+    Variant* racingkingsjanggi_house_variant() {
+        Variant* v = racingkingsjanggi_variant()->init();
+        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
+        v->dropChecks = false;		
+        v->pieceDrops = true;
+        v->capturesToHand = true;
+        return v;
+    }
 	
     Variant* racingpawnsjanggi_variant() {
-        Variant* v = chessjanggi_variant()->init();
+        Variant* v = changgi_variant()->init();
         v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
         v->remove_piece(SOLDIER);
         //v->remove_piece(FERS);
@@ -1617,8 +1624,8 @@ namespace {
         return v;
     }
 	
-    Variant* racingcentaurjanggi_variant() {
-        Variant* v = chessjanggi_variant()->init();
+    Variant* racinghorsejanggi_variant() {
+        Variant* v = changgi_variant()->init();
         v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC w - - 0 1";
         v->remove_piece(SOLDIER);
         v->add_piece(WAZIR, 'p');				
@@ -1629,29 +1636,21 @@ namespace {
         v->blackFlag = Rank10BB;
         v->flagMove = true;
         v->checking = false;
+        v->pass = false;			
         return v;
     }	
 
-    Variant* racingcentaurjanggi_house_variant() {
-        Variant* v = racingcentaurjanggi_variant()->init();
+    Variant* racinghorsejanggi_house_variant() {
+        Variant* v = racinghorsejanggi_variant()->init();
         v->startFen = "9/PPPP1pppp/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
         v->dropChecks = false;		
         v->pieceDrops = true;
         v->capturesToHand = true;
         return v;
     }
-
-    Variant* racingkingsjanggi_house_variant() {
-        Variant* v = racingkingsjanggi_variant()->init();
-        v->startFen = "9/9/9/9/9/9/9/9/krnb1BNRK/crnc1CNRC[] w - - 0 1";
-        v->dropChecks = false;		
-        v->pieceDrops = true;
-        v->capturesToHand = true;
-        return v;
-    }	
-
+	
     Variant* racingjanggi_variant() {
-        Variant* v = chessjanggi_variant()->init();
+        Variant* v = changgi_variant()->init();
         v->startFen = "rnba1abnr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RNBA1ABNR w - - 0 1";		
         v->flagPiece = KING;
         v->whiteFlag = Rank10BB;
@@ -2099,8 +2098,8 @@ void VariantMap::init() {
     add("racingkingsjanggihouse", racingkingsjanggi_house_variant());
     add("racingpawnsjanggi", racingpawnsjanggi_variant());	
     add("racingpawnsjanggihouse", racingpawnsjanggi_house_variant());
-    add("racingcentaurjanggi", racingcentaurjanggi_variant());	
-    add("racingcentaurjanggihouse", racingcentaurjanggi_house_variant());	
+    add("racinghorsejanggi", racinghorsejanggi_variant());	
+    add("racinghorsejanggihouse", racinghorsejanggi_house_variant());	
     add("racingjanggi", racingjanggi_variant());
     add("racingjanggihouse", racingjanggi_house_variant());	
     add("chessjanggi", chessjanggi_variant());
